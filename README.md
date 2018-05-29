@@ -6,6 +6,7 @@ Deep Learning 기반 Text Summarization 및 감성분석 모델 설계
 - konlpy
 - nltk
 - numpy
+- tensorflow
 
 ## 실행방법
 - ### 문장을 형태소 분석하여 NaiveBayesClassifier을 통해 긍정,부정을 검증
