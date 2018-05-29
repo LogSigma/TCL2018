@@ -1,6 +1,5 @@
 from konlpy.tag import Twitter
 import nltk
-
 twitter = Twitter()
 
 def read_data(filename):
@@ -17,20 +16,20 @@ def term_exists(doc):
 train_data = read_data('data/ratings_train.txt')
 test_data = read_data('data/ratings_test.txt')
 
-##
+## ㅎㅕㅇㅌㅐㅅㅗ ㅂㅜㄴㄹㅠ
 train_docs = [(tokenize(row[1]), row[2]) for row in train_data[1:]]
 test_docs = [(tokenize(row[1]), row[2]) for row in test_data[1:]]
 
 tokens = [t for d in train_docs for t in d[0]]
-
 text = nltk.Text(tokens, name='NMSC')
 
 selected_words = [f[0] for f in text.vocab().most_common(2000)]
-train_docs = train_docs[:10000]
+
 train_xy = [(term_exists(d), c) for d, c in train_docs]
 test_xy = [(term_exists(d), c) for d, c in test_docs]
 
 classifier = nltk.NaiveBayesClassifier.train(train_xy)
 print(nltk.classify.accuracy(classifier, test_xy))
+# -> 0.
 
 classifier.show_most_informative_features(10)
