@@ -35,4 +35,5 @@ test_xy = [(term_exists(d), c) for d, c in test_docs]
 classifier = nltk.NaiveBayesClassifier.train(train_xy)
 print(nltk.classify.accuracy(classifier, test_xy))
 
+# 가장 높은 특징 10개 
 classifier.show_most_informative_features(10)
