@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.preprocessing import sequence
-from keras.layers impport Dense, Embedding, LSTM
+from keras.layers import Dense, Embedding, LSTM
 
 max_features=20000
 maxlen=80
@@ -10,7 +10,7 @@ batch_size=32
 # 1-1.
 
 # 1-2.
-x_train = sequence.pad_sequences(x_train, maxlen=mxlen)
+x_train = sequence.pad_sequences(x_train, maxlen=maxlen)
 x_test = sequence.pad_sequences(x_test, maxlen=maxlen)
 
 # 2. 
