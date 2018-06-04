@@ -53,7 +53,7 @@ loss_ax.set_xlabel('epoch')
 loss_ax.set_ylabel('loss')
 acc_ax.set_ylabel('accuray')
 
-loss_ax.legend(loc='upper left')
-acc_ax.lengend(loc='lower left')
+loss_ax.legend(loc='lower left')
+acc_ax.legend(loc='upper left')
 
 plt.show()
