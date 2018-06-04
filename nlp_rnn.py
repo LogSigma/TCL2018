@@ -17,12 +17,13 @@ x_test = sequence.pad_sequences(x_test, maxlen=test_max_words)
 # 2. 
 model = Sequential()
 model.add(Embedding(max_features, 128, input_length=test_max_words))
-model.add(Droppout(0.2))
+model.add(Dropout(0.2))
 model.add(Conv1D(256,
                  3,
                  padding='valid',
                  activation='relu',
                  strides=1))
+model.add(MaxPooling1D(pool_size=4))
 model.add(LSTM(128))
 model.add(Dense(1, activation='sigmoid'))
 
