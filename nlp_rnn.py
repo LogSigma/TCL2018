@@ -2,21 +2,28 @@ import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.preprocessing import sequence
 from keras.layers import Dense, Embedding, LSTM
+from keras.layers import Dropout, Conv1D, MaxPooling1D
 
 max_features=20000
-maxlen=80
+test_max_words=80
 batch_size=32
 
 # 1-1.
 
 # 1-2.
-x_train = sequence.pad_sequences(x_train, maxlen=maxlen)
-x_test = sequence.pad_sequences(x_test, maxlen=maxlen)
+x_train = sequence.pad_sequences(x_train, maxlen=test_max_words)
+x_test = sequence.pad_sequences(x_test, maxlen=test_max_words)
 
 # 2. 
 model = Sequential()
-model.add(Embedding(max_features, 128))
-model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
+model.add(Embedding(max_features, 128, input_length=test_max_words))
+model.add(Droppout(0.2))
+model.add(Conv1D(256,
+                 3,
+                 padding='valid',
+                 activation='relu',
+                 strides=1))
+model.add(LSTM(128))
 model.add(Dense(1, activation='sigmoid'))
 
 # 3. 
