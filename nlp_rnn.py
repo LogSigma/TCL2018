@@ -45,23 +45,23 @@ def build_input(data, vocab):
 
 # 1. 데이터셋 생성하기
 
-# 
+# 데이터셋 불러오기
 train = pd.read_csv('data/ratings_train.txt', sep='\t', encoding='CP949')
 test = pd.read_csv('data/ratings_test.txt', sep='\t', encoding='CP949')
 
-# 
+# 데이터셋 전처리 : 형태소 분석(tokenize)
 train_data = [tokenize(row[2]) for row in train.itertuples()]
 test_data = [tokenize(row[2]) for row in test.itertuples()]
 #train_data = list(train['document'].apply(lambda x: ['/'.join(t) for t in twitter.pos(x, norm=True, stem=True)]))
 
-#  
+# 데이터셋 전처리 : 형태소 백터화
 tokens = [t for d in train_data for t in d]
 vocab = build_vocab(tokens)
 
 train_data = build_input(train_data, vocab)
 test_data = build_input(test_data, vocab)
 
-# 
+# 데이터셋 전처리 : Array로 
 x_train = np.array(train_data)
 y_train = np.array(train['label'])
 x_test = np.array(test_data)
