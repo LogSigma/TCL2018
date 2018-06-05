@@ -11,7 +11,7 @@ max_features=20000
 text_max_words=80
 batch_size=32
 
-# 0. 
+# 0. 함수 선언
 def tokenize(doc):
   return ['/'.join(t) for t in twitter.pos(doc, norm=True, stem=True)]
 
@@ -42,6 +42,8 @@ def build_input(data, vocab):
       seq_seg = seq_seg + padding
       result.append(seq_seg)
   return result
+
+# 1. 데이터셋 생성하기
 
 # 1-1.
 train = pd.read_csv('data/ratings_train.txt', sep='\t', encoding='CP949')
