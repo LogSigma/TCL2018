@@ -50,6 +50,7 @@ test = pd.read_csv('data/ratings_test.txt', sep='\t', encoding='CP949')
 # 1-2.
 train_data = [tokenize(row[2]) for row in train.itertuples()]
 test_data = [tokenize(row[2]) for row in test.itertuples()]
+#train_data = list(train['document'].apply(lambda x: ['/'.join(t) for t in twitter.pos(x, norm=True, stem=True)]))
 
 # 1-3. 
 tokens = [t for d in train_data for t in d[0]]
