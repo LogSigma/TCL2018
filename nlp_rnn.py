@@ -1,6 +1,7 @@
 import numpy as np
-import andas as pd
+import pandas as pd
 import matplotlib.pyplot as plt
+from konlpy.tag import Twitter
 from keras.models import Sequential
 from keras.layers import Dense, Embedding, LSTM
 from keras.layers import Dropout, Conv1D, MaxPooling1D
@@ -15,7 +16,7 @@ def tokenize(doc):
   return ['/'.join(t) for t in twitter.pos(doc, norm=True, stem=True)]
 
 def build_vocab(tokens):
-  vocab = dist()
+  vocab = dict()
   vocab['#UNKOWN'] = 0
   vocab['#PAD'] = 1
   for t in tokens:
