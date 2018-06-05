@@ -8,8 +8,8 @@ feature_count=2000
 # 1. 
 
 # 데이터 읽기
-train_data = pd.read_scv('data/ratings_train.txt', sep='\t', encoding='CP949')
-test_data = pd.read_scv('data/ratings_test.txt', sep='\t', encoding='CP949')
+train_data = pd.read_csv('data/ratings_train.txt', sep='\t', encoding='CP949')
+test_data = pd.read_csv('data/ratings_test.txt', sep='\t', encoding='CP949')
 
 # 형태소 분류
 train_data = [(['/'.join(t) for t in twitter.pos(row[2], norm=True, stem=True)], row[3]) for row in train_data.itertuples()]
