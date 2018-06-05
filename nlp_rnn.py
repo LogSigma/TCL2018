@@ -1,22 +1,71 @@
+import numpy as np
+import andas as pd
 import matplotlib.pyplot as plt
 from keras.models import Sequential
-from keras.preprocessing import sequence
 from keras.layers import Dense, Embedding, LSTM
 from keras.layers import Dropout, Conv1D, MaxPooling1D
 
+twitter = Twitter()
 max_features=20000
-test_max_words=80
+text_max_words=80
 batch_size=32
 
+# 0. 
+def tokenize(doc):
+  return ['/'.join(t) for t in twitter.pos(doc, norm=True, stem=True)]
+
+def build_vocab(tokens):
+  vocab = dist()
+  vocab['#UNKOWN'] = 0
+  vocab['#PAD'] = 1
+  for t in tokens:
+    if t not in vocab:
+      vocab[t] = len(vocab)
+  return vocab
+
+def get_token_id(token, vocab):
+  if token in vocab:
+    return vocab[token]
+  else:
+    0
+
+def build_input(data, vocab):
+  result = []
+  for d in data:
+    seq = [get_token_id(t, vocab) for t in d[0]]
+    while len(seq) > 0:
+      seq_seg = seq[:text_max_words]
+      seq = seq[text_max_words:]
+      
+      padding = [1] *(text_max_words - len(seq_seg))
+      seq_seg = seq_seg + padding
+      result.append(seq_seg)
+  return result
+
 # 1-1.
+train = pd.read_csv('data/ratings_train.txt', sep='\t', encoding='CP949')
+test = pd.read_csv('data/ratings_test.txt', sep='\t', encoding='CP949')
 
 # 1-2.
-x_train = sequence.pad_sequences(x_train, maxlen=test_max_words)
-x_test = sequence.pad_sequences(x_test, maxlen=test_max_words)
+train_data = [tokenize(row[2]) for row in train.itertuples()]
+test_data = [tokenize(row[2]) for row in test.itertuples()]
+
+# 1-3. 
+tokens = [t for d in train_data for t in d[0]]
+vocab = build_vocab(tokens)
+
+train_data = build_input(train_data, vocab)
+test_data = build_input(test_data, vocab)
+
+# 1-4.
+x_train = np.array(train_data)
+y_train = np.array(train['label'])
+x_test = np.array(test_data)
+y_test = np.array(test['label'])
 
 # 2. 
 model = Sequential()
-model.add(Embedding(max_features, 128, input_length=test_max_words))
+model.add(Embedding(max_features, 128, input_length=text_max_words))
 model.add(Dropout(0.2))
 model.add(Conv1D(256,
                  3,
