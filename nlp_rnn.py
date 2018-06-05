@@ -53,7 +53,7 @@ test_data = [tokenize(row[2]) for row in test.itertuples()]
 #train_data = list(train['document'].apply(lambda x: ['/'.join(t) for t in twitter.pos(x, norm=True, stem=True)]))
 
 # 1-3. 
-tokens = [t for d in train_data for t in d[0]]
+tokens = [t for d in train_data for t in d]
 vocab = build_vocab(tokens)
 
 train_data = build_input(train_data, vocab)
