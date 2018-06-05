@@ -45,29 +45,29 @@ def build_input(data, vocab):
 
 # 1. 데이터셋 생성하기
 
-# 1-1.
+# 
 train = pd.read_csv('data/ratings_train.txt', sep='\t', encoding='CP949')
 test = pd.read_csv('data/ratings_test.txt', sep='\t', encoding='CP949')
 
-# 1-2.
+# 
 train_data = [tokenize(row[2]) for row in train.itertuples()]
 test_data = [tokenize(row[2]) for row in test.itertuples()]
 #train_data = list(train['document'].apply(lambda x: ['/'.join(t) for t in twitter.pos(x, norm=True, stem=True)]))
 
-# 1-3. 
+#  
 tokens = [t for d in train_data for t in d]
 vocab = build_vocab(tokens)
 
 train_data = build_input(train_data, vocab)
 test_data = build_input(test_data, vocab)
 
-# 1-4.
+# 
 x_train = np.array(train_data)
 y_train = np.array(train['label'])
 x_test = np.array(test_data)
 y_test = np.array(test['label'])
 
-# 2. 
+# 2. 모델 구성하기 
 model = Sequential()
 model.add(Embedding(max_features, 128, input_length=text_max_words))
 model.add(Dropout(0.2))
@@ -80,18 +80,18 @@ model.add(MaxPooling1D(pool_size=4))
 model.add(LSTM(128))
 model.add(Dense(1, activation='sigmoid'))
 
-# 3. 
+# 3. 모델 학습과정 설정하기
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-# 4. 
+# 4. 모델 학습시키기
 hist = model.fit(x_train, y_train, epochs=3, batch_size=batch_size,
                  validation_data=(x_train, y_train), verbose=2)
 
-# 5.
+# 5. 모델 평가하기
 loss, acc = model.evaluate(x_test, y_test, batch_size=batch_size, verbose=2)
 print('Test performance: accuracy={0}, loss={1}'.format(acc, loss))
 
-# 6. 
+# 6. 학습과정 
 fig, loss_ax = plt.subplots()
 acc_ax = loss_ax.twinx()
 
