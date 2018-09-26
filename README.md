@@ -18,6 +18,3 @@ Deep Learning 기반 Text Summarization 및 감성분석 모델 설계
   - [nlp_rnn.py](https://github.com/LogSigma/TCL2018/blob/master/nlp_rnn.py)
 - ### CNN를 활용하여 긍정,부정 분석
   - [nlp_cnn.py](https://github.com/LogSigma/TCL2018/blob/master/nlp_cnn.py)
-
-## 연습문제
-- [Python 연습문제](https://github.com/LogSigma/TCL2018/blob/master/python.md)
