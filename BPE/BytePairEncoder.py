@@ -3,11 +3,13 @@ from collections import defaultdict
 
 class BPE:
     
-    def __init__(self, n_iters=10, verbose=True):
-        self.n_iters = n_iters if n_iters > 0 else 10
+    def __init__(self, n_iters=100, verbose=True, encoding='utf-8', consonants=False):
+        self.n_iters = n_iters if n_iters > 0 else 100
         self.units = {}
         self.max_length = 0
         self.verbose = verbose
+        self.encoding = encoding
+        self.consonants = consonants
         
     def train(self, sents):
         if self.verbose:
@@ -94,15 +96,25 @@ class BPE:
         subwords = ' '.join([s for s, _, _, _ in subwords])
         return subwords
     
+    def file_load(self, frame, iter_sent=False):
+        with open(fname, encoding=self.encoding) as f:
+            if iter_sent:
+                for doc in f:
+                    for sent in doc.split('  '):
+                        yield sent
+            else:
+                for doc in f:
+                    yield doc.strip()
+                    
     def save(self, fname):
-        with open(fname, 'w', encoding='utf-8') as f:
+        with open(fname, 'w', encoding=self.encoding) as f:
             f.write('n_iters={}\n'.format(self.n_iters))
             f.write('max_length={}\n'.format(self.max_length))
             for unit, frequency in sorted(self.units.items(), key=lambda x:(-x[1], -len(x[0]))):
                 f.write('{}\t{}\n'.format(unit, frequency))
                 
     def load(self, fname):
-        with open(fname, encoding='utf-8') as f:
+        with open(fname, encoding=self.encoding) as f:
             try:
                 self.n_iters = int(next(f).strip().split('=')[1])
                 self.max_length = int(next(f).strip().split('=')[1])
