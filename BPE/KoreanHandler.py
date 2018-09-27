@@ -1,11 +1,9 @@
-import sys
 import six
 import functools
 
 class KoreanHandler:
     
     def __init__(self):
-        
         self.TYPE_INITIAL = 0x001
         self.TYPE_MEDIAL = 0x010
         self.TYPE_FINAL = 0x100
@@ -27,8 +25,7 @@ class KoreanHandler:
                            self.TYPE_FINAL: self.FINALS}
         self.CHAR_SETS = dict(map(lambda x: (x[0], set(x[1])), six.iteritems(self.CHAR_LISTS)))
         self.CHARSET = functools.reduce(lambda x, y: x.union(y), self.CHAR_SETS.values(), set())
-        self.CHAR_INDICES = dict(
-            map(lambda x: (x[0], dict([(c, i) for i, c in enumerate(x[1])])),
+        self.CHAR_INDICES = dict(map(lambda x: (x[0], dict([(c, i) for i, c in enumerate(x[1])])),
                 six.iteritems(self.CHAR_LISTS)))
 
         def check_syllable(self, x):
@@ -62,11 +59,11 @@ class KoreanHandler:
             final_index = _m
 
             if not final_index:
-                result = (INITIALS[initial_index], MEDIALS[medial_index])
+                result = (self.INITIALS[initial_index], self.MEDIALS[medial_index])
             else:
                 result = (
-                    INITIALS[initial_index], MEDIALS[medial_index],
-                    FINALS[final_index - 1])
+                    self.INITIALS[initial_index], self.MEDIALS[medial_index],
+                    self.FINALS[final_index - 1])
 
             return result
 
@@ -74,8 +71,8 @@ class KoreanHandler:
             """
             Combines jamos to produce a single syllable.
             """
-            if initial not in CHAR_SETS[TYPE_INITIAL] or medial not in CHAR_SETS[
-                TYPE_MEDIAL] or (final and final not in CHAR_SETS[TYPE_FINAL]):
+            if initial not in self.CHAR_SETS[self.TYPE_INITIAL] or medial not in self.CHAR_SETS[
+                self.TYPE_MEDIAL] or (final and final not in self.CHAR_SETS[self.TYPE_FINAL]):
                 raise ValueError("Given Jamo characters are not valid.")
 
             initial_ind = self.CHAR_INDICES[self.TYPE_INITIAL][initial]
@@ -134,7 +131,7 @@ class KoreanHandler:
                 return result
 
             for c in string:
-                if c not in CHARSET:
+                if c not in self.CHARSET:
                     if queue:
                         new_c = flush(queue) + c
                     else:
@@ -145,13 +142,13 @@ class KoreanHandler:
                     t = jamo_type(c)
                     new_c = None
 
-                    if t & TYPE_FINAL == TYPE_FINAL:
-                        if not (last_t == TYPE_MEDIAL):
+                    if t & self.TYPE_FINAL == self.TYPE_FINAL:
+                        if not (last_t == self.TYPE_MEDIAL):
                             new_c = flush(queue)
-                    elif t == TYPE_INITIAL:
+                    elif t == self.TYPE_INITIAL:
                         new_c = flush(queue)
-                    elif t == TYPE_MEDIAL:
-                        if last_t & TYPE_INITIAL == TYPE_INITIAL:
+                    elif t == self.TYPE_MEDIAL:
+                        if last_t & self.TYPE_INITIAL == self.TYPE_INITIAL:
                             new_c = flush(queue, 1)
                         else:
                             new_c = flush(queue)
